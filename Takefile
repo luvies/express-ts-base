@@ -1,0 +1,72 @@
+module.exports = (take) => {
+  take.options.shell.printStdout = true;
+  take.options.shell.printStderr = true;
+
+  return {
+    '': {
+      desc: 'Clean & build',
+      deps: [
+        'clean',
+        'lint',
+        'build',
+      ],
+    },
+    build: {
+      desc: 'Builds the project',
+      async execute() {
+        await take.exec('tsc');
+      },
+    },
+    clean: {
+      desc: 'Cleans up build output',
+      async execute() {
+        await take.exec('rm -rf lib');
+      },
+    },
+    test: {
+      desc: 'Tests the project',
+      async execute() {
+        // use ts-node to allow proper source mapping and not require building
+        await take.exec(
+          './node_modules/.bin/nyc',
+          './node_modules/mocha/bin/mocha',
+          '-r ts-node/register',
+          '-r source-map-support/register',
+          'test/**/*.spec.ts',
+        );
+      },
+      children: {
+        coverage: {
+          async execute() {
+            await take.exec('nyc report --reporter=text-lcov | coveralls');
+          },
+        },
+      },
+    },
+    lint: {
+      desc: 'Lints the project',
+      async execute() {
+        await take.exec('tslint --project .');
+      },
+    },
+    fix: {
+      desc: 'Fixes lint issues',
+      async execute() {
+        await take.exec('tslint --project . --fix');
+      },
+    },
+    publish: {
+      desc: 'Publishes Take to npm',
+      deps: [
+        ':',
+        ':test',
+      ],
+      async execute() {
+        await take.exec('yarn publish');
+        await take.exec('git push origin --tags');
+        await take.exec('git push');
+        await take.exec('yarn global upgrade @luvies/take --latest');
+      },
+    },
+  };
+};

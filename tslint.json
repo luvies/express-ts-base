@@ -1,0 +1,41 @@
+{
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rules": {
+    "interface-name": false,
+    "semicolon": true,
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "ordered-imports": {
+      "severity": "warn"
+    },
+    "no-unused-variable": false, // use compiler warnings
+    "indent": [
+      true,
+      "spaces",
+      2
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always"
+      }
+    ],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-type-operator",
+      "check-preblock"
+    ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "src/**/*.json"
+    ]
+  }
+}
