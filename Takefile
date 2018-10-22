@@ -56,16 +56,15 @@ module.exports = (take) => {
       },
     },
     publish: {
-      desc: 'Publishes Take to npm',
+      desc: 'Publishes the project to npm',
       deps: [
         ':',
-        ':test',
+        // ':test',
       ],
       async execute() {
         await take.exec('yarn publish');
         await take.exec('git push origin --tags');
         await take.exec('git push');
-        await take.exec('yarn global upgrade @luvies/take --latest');
       },
     },
   };
