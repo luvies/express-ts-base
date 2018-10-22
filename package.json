@@ -2,7 +2,7 @@
   "name": "express-ts-base",
   "version": "1.0.0",
   "description": "Provides a few base classes that can be use to set up a node webserver.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "repository": "luvies/express-ts-base",
   "author": "luvies",
   "license": "MIT",
